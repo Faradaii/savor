@@ -31,20 +31,23 @@ class _DetailScreenState extends State<DetailScreen> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        vertical: 8.0, horizontal: 10.0),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () => Navigator.pop(context),
                           icon: const Icon(Icons.arrow_back),
                         ),
                         IconButton(
                           style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.white),
+                            backgroundColor:
+                                MaterialStateProperty.all(Colors.white),
                           ),
                           onPressed: () {},
                           icon: const Icon(Icons.share),
@@ -85,7 +88,8 @@ class _DetailScreenState extends State<DetailScreen> {
                         Icon(
                           Icons.location_on,
                           color: Theme.of(context).colorScheme.secondary,
-                          size: Theme.of(context).textTheme.titleLarge?.fontSize,
+                          size:
+                              Theme.of(context).textTheme.titleLarge?.fontSize,
                         ),
                         Text(
                           "${widget.restaurant.city}, Indonesia",
@@ -151,7 +155,8 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget _buildCategoryContainer(BuildContext context, {required IconData icon, required int count}) {
+  Widget _buildCategoryContainer(BuildContext context,
+      {required IconData icon, required int count}) {
     return Container(
       width: MediaQuery.of(context).size.width * 0.3,
       height: MediaQuery.of(context).size.width * 0.3,
@@ -179,33 +184,37 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget _buildItemsList(BuildContext context, {required String title, required List<dynamic> items, required IconData icon}) {
+  Widget _buildItemsList(BuildContext context,
+      {required String title,
+      required List<dynamic> items,
+      required IconData icon}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(title, style: Theme.of(context).textTheme.titleLarge),
         SizedBox(
-          height: MediaQuery.of(context).size.width * 0.3,
+          height: MediaQuery.of(context).size.width * 0.4,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: items.length,
             itemBuilder: (context, index) => Card.outlined(
               margin: const EdgeInsets.all(10),
-              child: InkWell(
-                onTap: () {},
-                child: Container(
-                  padding: const EdgeInsets.all(10.0),
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(icon),
-                      Text(
+              child: Container(
+                width: MediaQuery.of(context).size.width * 0.5,
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(child: Icon(icon)),
+                    Expanded(
+                      child: Text(
                         items[index].name,
+                        textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.titleMedium,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),

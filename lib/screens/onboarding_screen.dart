@@ -156,9 +156,10 @@ class OnboardingSection extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(height: 40),
-                SvgPicture.asset(
-                  onboardingData[index]['image']!,
-                  width: MediaQuery.of(context).size.width - 50,
+                Flexible(
+                  child: SvgPicture.asset(
+                    onboardingData[index]['image']!,
+                  ),
                 ),
                 SizedBox(height: 40),
                 Text(
