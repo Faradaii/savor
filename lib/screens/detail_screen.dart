@@ -65,9 +65,11 @@ class _DetailScreenState extends State<DetailScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget.restaurant.name,
-                          style: Theme.of(context).textTheme.headlineMedium,
+                        Expanded(
+                          child: Text(
+                            widget.restaurant.name,
+                            style: Theme.of(context).textTheme.headlineMedium,
+                          ),
                         ),
                         IconButton(
                           onPressed: () {
