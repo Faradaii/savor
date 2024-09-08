@@ -106,7 +106,13 @@ class _DetailScreenState extends State<DetailScreen> {
                   return _buildDetailContent(context, state.restaurant,
                       isSkeleton: false);
                 case DetailRestaurantFailure():
-                  return CustomInfo(message: state.message, typeInfo: "error");
+                  return Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    child: Center(
+                        child: CustomInfo(
+                            message: state.message, typeInfo: "error")),
+                  );
                 default:
                   return _buildDetailContent(context, fakeRestaurant,
                       isSkeleton: true);
