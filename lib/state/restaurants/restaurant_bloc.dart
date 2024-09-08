@@ -19,8 +19,10 @@ class RestaurantsBloc extends Bloc<RestaurantsEvent, RestaurantsState> {
         emit(RestaurantsLoaded(restaurants: res.restaurants));
       } on SocketException {
         emit(RestaurantsFailure(message: "There's no internet connection"));
+      } on HttpException {
+        emit(RestaurantsFailure(message: "Couldn't load our restaurants"));
       } catch (e) {
-        emit(RestaurantsFailure(message: e.toString()));
+        emit(RestaurantsFailure(message: "An unexpected error occurred"));
       }
     });
   }

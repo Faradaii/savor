@@ -22,8 +22,11 @@ class DetailRestaurantBloc
       } on SocketException {
         emit(
             DetailRestaurantFailure(message: "There's no internet connection"));
+      } on HttpException {
+        emit(DetailRestaurantFailure(
+            message: "Couldn't load detail restaurant"));
       } catch (e) {
-        emit(DetailRestaurantFailure(message: e.toString()));
+        emit(DetailRestaurantFailure(message: "An unexpected error occurred"));
       }
     });
 
@@ -40,17 +43,21 @@ class DetailRestaurantBloc
             review: res.customerReviews,
           ));
 
-          final updatedReviews = res.customerReviews;
-
           final RestaurantDetail updatedRestaurant =
-              currentState.restaurant.copyWith(customerReviews: updatedReviews);
+              currentState.restaurant.copyWith(customerReviews: res.customerReviews);
 
           emit(DetailRestaurantLoaded(restaurant: updatedRestaurant));
         } on SocketException {
           emit(DetailRestaurantFailure(
               message: "There's no internet connection"));
+          emit(DetailRestaurantLoaded(restaurant: currentState.restaurant));
+        } on HttpException {
+          emit(DetailRestaurantFailure(
+              message: "Couldn't review the restaurant"));
+          emit(DetailRestaurantLoaded(restaurant: currentState.restaurant));
         } catch (e) {
-          emit(AddReviewFailure(message: e.toString()));
+          emit(
+              DetailRestaurantFailure(message: "An unexpected error occurred"));
           emit(DetailRestaurantLoaded(restaurant: currentState.restaurant));
         }
       }

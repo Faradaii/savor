@@ -24,8 +24,10 @@ class SearchRestaurantBloc
       } on SocketException {
         emit(
             SearchRestaurantFailure(message: "There's no internet connection"));
+      } on HttpException {
+        emit(SearchRestaurantFailure(message: "Couldn't find the restaurant"));
       } catch (e) {
-        emit(SearchRestaurantFailure(message: e.toString()));
+        emit(SearchRestaurantFailure(message: "An unexpected error occurred"));
       }
     });
 
