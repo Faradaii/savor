@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  bloc:
+    dependency: "direct main"
+    description:
+      name: bloc
+      sha256: "106842ad6569f0b60297619e9e0b1885c2fb9bf84812935490e6c5275777804e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.1.4"
   boolean_selector:
     dependency: transitive
     description:
@@ -86,6 +94,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: "9357883bdd153ab78cbf9ffa07656e336b8bbb2b5a3ca596b0b27e119f7c7d77"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -94,6 +110,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.0"
+  flutter_local_notifications_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_local_notifications_platform_interface
+      sha256: "7744aad0b3637e6004929efe9ac2dfd3b878f4cecebfb1e9c2dfea5ac7d5c2e7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.1"
+  flutter_local_notifications_support:
+    dependency: "direct main"
+    description:
+      name: flutter_local_notifications_support
+      sha256: bc6375db7bb97d07f0a99baf43be6320c6834db01fa46655ec33d4cad01a99bf
+      url: "https://pub.dev"
+    source: hosted
+    version: "8.2.0"
   flutter_svg:
     dependency: "direct main"
     description:
@@ -116,7 +148,7 @@ packages:
     source: hosted
     version: "6.2.1"
   http:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: http
       sha256: b9c29a161230ee03d3ccf545097fccd9b87a5264228c5d348202e0f0c28f9010
@@ -328,6 +360,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.2"
+  timezone:
+    dependency: transitive
+    description:
+      name: timezone
+      sha256: "57b35f6e8ef731f18529695bffc62f92c6189fac2e52c12d478dec1931afb66e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.8.0"
   typed_data:
     dependency: transitive
     description:
