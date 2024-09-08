@@ -45,9 +45,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       OnboardingSection(index: index),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildIndicator(context),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildActionButton(context),
               _buildSkipButton(),
             ],
@@ -58,7 +58,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   Widget _buildIndicator(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: 10,
       child: Center(
@@ -92,10 +92,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             );
           }
         },
-        child: Text(
-          currentIndex == 2 ? '' : 'Next',
-          style: Theme.of(context).textTheme.labelLarge,
-        ),
         style: currentIndex == 2
             ? TextButton.styleFrom(
                 overlayColor: Colors.transparent,
@@ -103,6 +99,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             : TextButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
               ),
+        child: Text(
+          currentIndex == 2 ? '' : 'Next',
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
       ),
     );
   }
@@ -155,13 +155,13 @@ class OnboardingSection extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Flexible(
                   child: SvgPicture.asset(
                     onboardingData[index]['image']!,
                   ),
                 ),
-                SizedBox(height: 40),
+                const SizedBox(height: 40),
                 Text(
                   onboardingData[index]['desc']!,
                   textAlign: TextAlign.center,
