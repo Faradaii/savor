@@ -14,8 +14,7 @@ class ApiService {
   };
 
   Future<RestaurantsResult> listRestaurant() async {
-    final response =
-        await http.get(Uri.parse("$baseURL + ${endpoint['list']}"));
+    final response = await http.get(Uri.parse("$baseURL${endpoint['list']}"));
     if (response.statusCode == 200) {
       return RestaurantsResult.fromJson(json.decode(response.body));
     } else {
@@ -25,7 +24,7 @@ class ApiService {
 
   Future<RestaurantDetailResult> restaurantDetail(String id) async {
     final response =
-        await http.get(Uri.parse("$baseURL + ${endpoint['detail']} + $id"));
+        await http.get(Uri.parse("$baseURL${endpoint['detail']}$id"));
     if (response.statusCode == 200) {
       return RestaurantDetailResult.fromJson(json.decode(response.body));
     } else {
@@ -35,7 +34,7 @@ class ApiService {
 
   Future<SearchRestaurantsResult> searchRestaurant(String q) async {
     final response =
-        await http.get(Uri.parse("$baseURL + ${endpoint['search']} + $q"));
+        await http.get(Uri.parse("$baseURL${endpoint['search']}$q"));
     if (response.statusCode == 200) {
       return SearchRestaurantsResult.fromJson(json.decode(response.body));
     } else {
@@ -45,13 +44,13 @@ class ApiService {
 
   Future<ReviewRestaurantResult> addReview(AddReviewRestaurant review) async {
     final response = await http.post(
-      Uri.parse("$baseURL + ${endpoint['addReview']}"),
+      Uri.parse("$baseURL${endpoint['addReview']}"),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
       body: jsonEncode(review.toJson()),
     );
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return ReviewRestaurantResult.fromJson(json.decode(response.body));
     } else {
       throw Exception('Failed to add review');
