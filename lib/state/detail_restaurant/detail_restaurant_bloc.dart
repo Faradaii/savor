@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:savor/data/api/api_service.dart';
 import 'package:savor/data/model/restaurant.dart';
+import 'package:savor/data/model/restaurant_detail.dart';
+import 'package:savor/data/model/review_restaurant.dart';
 
 part 'detail_restaurant_event.dart';
 part 'detail_restaurant_state.dart';

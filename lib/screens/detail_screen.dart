@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:savor/data/model/restaurant.dart';
+import 'package:savor/data/model/restaurant_detail.dart';
+import 'package:savor/data/model/review_restaurant.dart';
 import 'package:savor/state/database/database_bloc.dart';
 import 'package:savor/state/detail_restaurant/detail_restaurant_bloc.dart';
 import 'package:savor/widgets/custom_info.dart';

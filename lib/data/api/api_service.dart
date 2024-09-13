@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:savor/data/model/restaurant.dart';
 import 'package:http/http.dart' as http;
+import 'package:savor/data/model/restaurant_detail.dart';
+import 'package:savor/data/model/review_restaurant.dart';
+import 'package:savor/data/model/search_restaurant.dart';
 
 class ApiService {
   static final baseURL = dotenv.env['API_BASE_URL'];
