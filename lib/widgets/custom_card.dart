@@ -8,11 +8,11 @@ class CustomCard extends StatelessWidget {
   final int index;
   const CustomCard({
     super.key,
-    required this.bestRestaurants,
+    required this.items,
     required this.index,
   });
 
-  final List<Restaurant> bestRestaurants;
+  final List<Restaurant> items;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +24,7 @@ class CustomCard extends StatelessWidget {
       child: InkWell(
         onTap: () {
           Navigator.pushNamed(context, DetailScreen.routeName,
-              arguments: bestRestaurants[index].id);
+              arguments: items[index].id);
         },
         borderRadius: BorderRadius.circular(20.0),
         splashColor: Theme.of(context).colorScheme.primary,
@@ -55,7 +55,7 @@ class CustomCard extends StatelessWidget {
                         ),
                       ),
                       child: Image.network(
-                        "${dotenv.env['IMAGE_API_URL']}${bestRestaurants[index].pictureId}",
+                        "${dotenv.env['IMAGE_API_URL']}${items[index].pictureId}",
                         fit: BoxFit.cover,
                       ),
                     ),
@@ -65,13 +65,13 @@ class CustomCard extends StatelessWidget {
               Column(children: [
                 Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(bestRestaurants[index].name,
+                  child: Text(items[index].name,
                       style: Theme.of(context).textTheme.titleMedium),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
-                Text(bestRestaurants[index].description,
+                Text(items[index].description,
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.bodySmall!),
@@ -87,7 +87,7 @@ class CustomCard extends StatelessWidget {
                         size: Theme.of(context).textTheme.titleSmall!.fontSize,
                       ),
                     ),
-                    Text(bestRestaurants[index].city,
+                    Text(items[index].city,
                         style: Theme.of(context).textTheme.titleSmall),
                   ],
                 ),
@@ -97,14 +97,14 @@ class CustomCard extends StatelessWidget {
                 Row(
                   children: [
                     ...List.generate(
-                        bestRestaurants[index].rating.floor(),
+                        items[index].rating.floor(),
                         (index) => Skeleton.shade(
                               child: Icon(
                                 Icons.star,
                                 color: Theme.of(context).colorScheme.primary,
                               ),
                             )),
-                    Text(bestRestaurants[index].rating.toString(),
+                    Text(items[index].rating.toString(),
                         style: Theme.of(context).textTheme.titleSmall),
                   ],
                 )

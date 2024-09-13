@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:savor/data/model/restaurant.dart';
+import 'package:savor/state/database/database_bloc.dart';
 import 'package:savor/state/detail_restaurant/detail_restaurant_bloc.dart';
 import 'package:savor/widgets/custom_info.dart';
 import 'package:skeletonizer/skeletonizer.dart';
@@ -19,7 +20,6 @@ class DetailScreen extends StatefulWidget {
 
 class _DetailScreenState extends State<DetailScreen> {
   late RestaurantDetail restaurant;
-  bool isFav = false;
   bool isExpandedDesc = false;
   final TextEditingController _nameReviewerController = TextEditingController();
   final TextEditingController _textReviewController = TextEditingController();
@@ -29,6 +29,7 @@ class _DetailScreenState extends State<DetailScreen> {
     super.initState();
     BlocProvider.of<DetailRestaurantBloc>(context)
         .add(FetchDetailRestaurant(idRestaurant: widget.idRestaurant));
+    context.read<DatabaseBloc>().add(CheckBookmarked(widget.idRestaurant));
   }
 
   void _sendReview(RestaurantDetail restaurant) {
@@ -77,47 +78,54 @@ class _DetailScreenState extends State<DetailScreen> {
       ]);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: SingleChildScrollView(
-          child: BlocConsumer<DetailRestaurantBloc, DetailRestaurantState>(
-            listener: (context, state) {
-              if (state is AddReviewSuccess) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Review has been added"),
-                  ),
-                );
-              }
-              if (state is AddReviewFailure) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message),
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
-              switch (state) {
-                case DetailRestaurantLoading():
-                  return _buildDetailContent(context, fakeRestaurant,
-                      isSkeleton: true);
-                case DetailRestaurantLoaded():
-                  return _buildDetailContent(context, state.restaurant,
-                      isSkeleton: false);
-                case DetailRestaurantFailure():
-                  return Container(
-                    height: MediaQuery.of(context).size.height,
-                    width: MediaQuery.of(context).size.width,
-                    child: Center(
-                        child: CustomInfo(
-                            message: state.message, typeInfo: "error")),
+    return PopScope(
+      onPopInvokedWithResult: (bool didPop, Object? result) async {
+        if (didPop) {
+          context.read<DatabaseBloc>().add(LoadBookmarks());
+        }
+      },
+      child: Scaffold(
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: BlocConsumer<DetailRestaurantBloc, DetailRestaurantState>(
+              listener: (context, state) {
+                if (state is AddReviewSuccess) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("Review has been added"),
+                    ),
                   );
-                default:
-                  return _buildDetailContent(context, fakeRestaurant,
-                      isSkeleton: true);
-              }
-            },
+                }
+                if (state is AddReviewFailure) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.message),
+                    ),
+                  );
+                }
+              },
+              builder: (context, state) {
+                switch (state) {
+                  case DetailRestaurantLoading():
+                    return _buildDetailContent(context, fakeRestaurant,
+                        isSkeleton: true);
+                  case DetailRestaurantLoaded():
+                    return _buildDetailContent(context, state.restaurant,
+                        isSkeleton: false);
+                  case DetailRestaurantFailure():
+                    return Container(
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      child: Center(
+                          child: CustomInfo(
+                              message: state.message, typeInfo: "error")),
+                    );
+                  default:
+                    return _buildDetailContent(context, fakeRestaurant,
+                        isSkeleton: true);
+                }
+              },
+            ),
           ),
         ),
       ),
@@ -239,16 +247,41 @@ class _DetailScreenState extends State<DetailScreen> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ),
-          IconButton(
-            onPressed: () {
-              setState(() {
-                isFav = !isFav;
-              });
+          BlocConsumer<DatabaseBloc, DatabaseState>(
+            listener: (context, state) {
+              if (state is BookmarkMessage) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(state.message),
+                  ),
+                );
+              }
             },
-            icon: Icon(
-              isFav ? Icons.favorite : Icons.favorite_border,
-              color: Theme.of(context).colorScheme.primary,
-            ),
+            builder: (context, state) {
+              if (state is BookmarkChecked && state.isBookmarked) {
+                return IconButton(
+                  icon: Icon(
+                    Icons.favorite,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  onPressed: () {
+                    context.read<DatabaseBloc>().add(RemoveBookmark(
+                        restaurant.extractRestaurantFromRestaurantDetail()));
+                  },
+                );
+              } else {
+                return IconButton(
+                  icon: Icon(
+                    Icons.favorite_border,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  onPressed: () {
+                    context.read<DatabaseBloc>().add(AddBookmark(
+                        restaurant.extractRestaurantFromRestaurantDetail()));
+                  },
+                );
+              }
+            },
           ),
         ],
       ),

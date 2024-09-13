@@ -4,7 +4,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:savor/common/styles.dart';
 import 'package:savor/config/routes.dart';
 import 'package:savor/data/api/api_service.dart';
+import 'package:savor/data/db/database_helper.dart';
 import 'package:savor/observer.dart';
+import 'package:savor/state/database/database_bloc.dart';
 import 'package:savor/state/detail_restaurant/detail_restaurant_bloc.dart';
 import 'package:savor/state/restaurants/restaurant_bloc.dart';
 import 'package:savor/state/search_restaurant/search_restaurant_bloc.dart';
@@ -13,6 +15,7 @@ Future main() async {
   await dotenv.load(fileName: ".env");
 
   final ApiService apiService = ApiService();
+  final DatabaseHelper databaseHelper = DatabaseHelper();
 
   Bloc.observer = MyObserver();
 
@@ -26,6 +29,9 @@ Future main() async {
       ),
       BlocProvider(
         create: (context) => SearchRestaurantBloc(apiService: apiService),
+      ),
+      BlocProvider(
+        create: (context) => DatabaseBloc(databaseHelper: databaseHelper),
       ),
     ],
     child: const MyApp(),

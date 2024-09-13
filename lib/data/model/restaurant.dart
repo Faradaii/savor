@@ -168,6 +168,17 @@ class RestaurantDetail {
         rating: rating ?? this.rating,
         customerReviews: customerReviews ?? this.customerReviews);
   }
+
+  Restaurant extractRestaurantFromRestaurantDetail() {
+    return Restaurant(
+      id: id,           
+      name: name,
+      description: description,
+      city: city,
+      pictureId: pictureId,
+      rating: rating,
+    );
+  }
 }
 
 class Category {
