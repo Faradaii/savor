@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:savor/data/model/restaurant.dart';
+import 'package:savor/screens/bookmark_screen.dart';
 import 'package:savor/screens/search_screen.dart';
+import 'package:savor/screens/settings_screen.dart';
 import 'package:savor/state/restaurants/restaurant_bloc.dart';
 import 'package:savor/widgets/custom_card.dart';
 import 'package:savor/widgets/custom_info.dart';
@@ -34,9 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(onPressed: () {}, icon: const Icon(Icons.notifications))
+            Builder(builder: (context) {
+              return IconButton(
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                  icon: const Icon(Icons.menu));
+            })
           ],
-          leading: const Icon(Icons.person),
+          leading: Container(
+              margin: const EdgeInsets.fromLTRB(10, 0, 0, 0),
+              child: SvgPicture.asset("assets/images/avatar_1.svg", width: 40)),
           title: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -45,6 +56,94 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               const Text("User")
+            ],
+          ),
+        ),
+        endDrawer: Drawer(
+          backgroundColor: Theme.of(context).colorScheme.onSecondary,
+          child: ListView(
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.secondary,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                        child: SvgPicture.asset("assets/images/avatar_1.svg",
+                            width: 80)),
+                    Expanded(
+                      flex: 0,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          Text(
+                            'User',
+                            style: Theme.of(context)
+                                .textTheme
+                                .titleLarge!
+                                .copyWith(
+                                    color: Theme.of(context)
+                                        .colorScheme
+                                        .onSecondary),
+                          ),
+                          Text('Food Explorer',
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .titleSmall!
+                                  .copyWith(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .onSecondary)),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                title: Row(
+                  children: [
+                    Container(
+                        margin: const EdgeInsets.all(5),
+                        child: const Icon(Icons.bookmark)),
+                    Text('Bookmarked',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                                color:
+                                    Theme.of(context).colorScheme.onPrimary)),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.of(context).pushNamed(BookmarkedScreen.routeName);
+                },
+              ),
+              ListTile(
+                title: Row(
+                  children: [
+                    Container(
+                        margin: const EdgeInsets.all(5),
+                        child: const Icon(Icons.settings)),
+                    Text('Settings',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleMedium!
+                            .copyWith(
+                                color:
+                                    Theme.of(context).colorScheme.onPrimary)),
+                  ],
+                ),
+                onTap: () {
+                  Navigator.of(context).pushNamed(SettingsScreen.routeName);
+                },
+              ),
             ],
           ),
         ),
@@ -121,7 +220,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
 
                     if (state is RestaurantsFailure) {
-                      return CustomInfo(message: state.message, typeInfo: "error");
+                      return CustomInfo(
+                          message: state.message, typeInfo: "error");
                     }
 
                     final List<Restaurant> fakeRestaurants = List.filled(
@@ -133,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             pictureId: BoneMock.time,
                             city: BoneMock.city,
                             rating: 5));
-                    
+
                     return CardRestaurant(
                         bestRestaurants: fakeRestaurants, isSkeleton: true);
                   },
@@ -206,7 +306,7 @@ class CardRestaurant extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 itemCount: bestRestaurants.length,
                 itemBuilder: (context, index) =>
-                    CustomCard(bestRestaurants: bestRestaurants, index: index)),
+                    CustomCard(items: bestRestaurants, index: index)),
           ),
         ),
       ],
