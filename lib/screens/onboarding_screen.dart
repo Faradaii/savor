@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:savor/data/onboarding.dart';
 import 'package:savor/screens/home_screen.dart';
+import 'package:savor/state/preferences/preferences_bloc.dart';
 
 class OnboardingScreen extends StatefulWidget {
   static const String routeName = '/onboarding';
@@ -17,8 +19,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   void initState() {
-    _controller = PageController(initialPage: 0);
     super.initState();
+    _controller = PageController(initialPage: 0);
   }
 
   @override
@@ -29,31 +31,40 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: PageView.builder(
-                  controller: _controller,
-                  itemCount: 3,
-                  onPageChanged: (value) =>
-                      setState(() => currentIndex = value),
-                  itemBuilder: (context, index) =>
-                      OnboardingSection(index: index),
-                ),
+    return BlocConsumer<PreferencesBloc, PreferencesState>(
+      listener: (context, state) {
+        if (state is DisabledFirstTime) {
+            Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+        }
+      },
+      builder: (context, state) {
+        return Scaffold(
+          body: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: PageView.builder(
+                      controller: _controller,
+                      itemCount: 3,
+                      onPageChanged: (value) =>
+                          setState(() => currentIndex = value),
+                      itemBuilder: (context, index) =>
+                          OnboardingSection(index: index),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildIndicator(context),
+                  const SizedBox(height: 20),
+                  _buildActionButton(context),
+                  _buildSkipButton(),
+                ],
               ),
-              const SizedBox(height: 20),
-              _buildIndicator(context),
-              const SizedBox(height: 20),
-              _buildActionButton(context),
-              _buildSkipButton(),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
@@ -113,7 +124,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: TextButton(
         onPressed: () {
           if (currentIndex == 2) {
-            Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+            BlocProvider.of<PreferencesBloc>(context)
+                .add(DisableFirstTimeEvent());
             return;
           }
           _controller.animateToPage(

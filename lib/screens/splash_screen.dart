@@ -1,25 +1,57 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:savor/screens/home_screen.dart';
 import 'package:savor/screens/onboarding_screen.dart';
+import 'package:savor/state/preferences/preferences_bloc.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   static const String routeName = '/splash';
   const SplashScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, OnboardingScreen.routeName);
-    });
+  State<SplashScreen> createState() => _SplashScreenState();
+}
 
-    return const Scaffold(
-      body: Stack(
-        alignment: Alignment.bottomCenter,
-        fit: StackFit.expand,
-        children: [
-          SplashMain(),
-          SplashFooter(),
-        ],
-      ),
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<PreferencesBloc>(context)
+        .add(GetFirstTimePreferencesEvent());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<PreferencesBloc, PreferencesState>(
+      listener: (context, state) {
+        if (state is FirstTimePreferences) {
+          if (state.isFirstTime) {
+            print(state.isFirstTime);
+            Future.delayed(const Duration(seconds: 3), () {
+              Navigator.pushReplacementNamed(
+                  context, OnboardingScreen.routeName);
+              return;
+            });
+          } else {
+            Future.delayed(const Duration(seconds: 3), () {
+              Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+              return;
+            });
+          }
+        }
+      },
+      builder: (context, state) {
+        return const Scaffold(
+          body: Stack(
+            alignment: Alignment.bottomCenter,
+            fit: StackFit.expand,
+            children: [
+              SplashMain(),
+              SplashFooter(),
+            ],
+          ),
+        );
+      },
     );
   }
 }
