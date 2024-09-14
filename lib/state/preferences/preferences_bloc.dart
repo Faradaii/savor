@@ -44,7 +44,6 @@ class PreferencesBloc extends Bloc<PreferencesEvent, PreferencesState> {
     on<GetFirstTimePreferencesEvent>((event, emit) async {
       bool isFirstTime = await preferencesHelper.isFirstTime;
 
-      print(isFirstTime);
       emit(FirstTimePreferences(isFirstTime));
     });
   }
