@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:savor/data/model/restaurant.dart';
@@ -20,7 +19,8 @@ class CustomList extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.primary),
+        border: Border.all(
+            color: Theme.of(context).colorScheme.primary, width: 0.5),
         borderRadius: BorderRadius.circular(10.0),
       ),
       child: ListTile(

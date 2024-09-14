@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:savor/data/model/restaurant.dart';
 import 'package:savor/screens/bookmark_screen.dart';
+import 'package:savor/screens/detail_screen.dart';
 import 'package:savor/screens/search_screen.dart';
 import 'package:savor/screens/settings_screen.dart';
 import 'package:savor/state/restaurants/restaurant_bloc.dart';
+import 'package:savor/utils/notification_helper.dart';
 import 'package:savor/widgets/custom_card.dart';
 import 'package:savor/widgets/custom_info.dart';
 import 'package:savor/widgets/custom_list.dart';
@@ -22,10 +24,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final NotificationHelper _notificationHelper = NotificationHelper();
   @override
   void initState() {
     super.initState();
     BlocProvider.of<RestaurantsBloc>(context).add(FetchRestaurants());
+    _notificationHelper
+        .configureSelectNotificationSubject(DetailScreen.routeName);
+  }
+
+  @override
+  void dispose() {
+    selectNotificationSubject.close();
+    super.dispose();
   }
 
   void _refreshPage() {

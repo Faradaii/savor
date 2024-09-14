@@ -32,6 +32,7 @@ class CustomCard extends StatelessWidget {
           decoration: BoxDecoration(
             border: Border.all(
               color: Theme.of(context).colorScheme.secondary,
+              width: 0.2,
             ),
             borderRadius: BorderRadius.circular(20.0),
           ),
