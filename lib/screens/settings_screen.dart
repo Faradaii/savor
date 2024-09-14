@@ -39,7 +39,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       value: state.isDailyRecommendationActive,
                       onChanged: (value) async {
                         if (Platform.isIOS) {
-                          Container();
+                          await showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    content: const Text(
+                                        'This feature is not available on iOS'),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () =>
+                                              Navigator.pop(context),
+                                          child: const Text('OK'))
+                                    ],
+                                  ));
                         } else {
                           context
                               .read<PreferencesBloc>()

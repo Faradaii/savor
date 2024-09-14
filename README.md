@@ -1,5 +1,7 @@
 # Savor
 
+![](https://github.com/Faradaii/savor/blob/mainv3/assets/demo.gif)
+
 Welcome to **Savor** – your ultimate guide to discovering the best restaurants around you! Whether you're a foodie looking for new culinary adventures or just need a reliable place to eat, Savor has got you covered.
 
 ## Features
