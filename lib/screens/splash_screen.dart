@@ -26,7 +26,6 @@ class _SplashScreenState extends State<SplashScreen> {
       listener: (context, state) {
         if (state is FirstTimePreferences) {
           if (state.isFirstTime) {
-            print(state.isFirstTime);
             Future.delayed(const Duration(seconds: 3), () {
               Navigator.pushReplacementNamed(
                   context, OnboardingScreen.routeName);

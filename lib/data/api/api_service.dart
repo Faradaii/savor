@@ -8,7 +8,9 @@ import 'package:savor/data/model/review_restaurant.dart';
 import 'package:savor/data/model/search_restaurant.dart';
 
 class ApiService {
-  static final baseURL = dotenv.env['API_BASE_URL'];
+   ApiService({http.Client? client}) : httpClient = client ?? http.Client();
+  final http.Client httpClient;
+  static const baseURL = "https://restaurant-api.dicoding.dev/";
   static final endpoint = {
     "list": "list",
     "detail": "detail/",
@@ -17,7 +19,7 @@ class ApiService {
   };
 
   Future<RestaurantsResult> listRestaurant() async {
-    final response = await http.get(Uri.parse("$baseURL${endpoint['list']}"));
+    final response = await httpClient.get(Uri.parse("$baseURL${endpoint['list']}"));
     if (response.statusCode == 200) {
       return RestaurantsResult.fromJson(json.decode(response.body));
     } else {
@@ -25,9 +27,10 @@ class ApiService {
     }
   }
 
-  Future<RestaurantDetailResult> restaurantDetail(String id) async {
+  Future<RestaurantDetailResult> restaurantDetail(String id,
+      ) async {
     final response =
-        await http.get(Uri.parse("$baseURL${endpoint['detail']}$id"));
+        await httpClient.get(Uri.parse("$baseURL${endpoint['detail']}$id"));
     if (response.statusCode == 200) {
       return RestaurantDetailResult.fromJson(json.decode(response.body));
     } else {
@@ -35,9 +38,10 @@ class ApiService {
     }
   }
 
-  Future<SearchRestaurantsResult> searchRestaurant(String q) async {
+  Future<SearchRestaurantsResult> searchRestaurant(String q,
+      ) async {
     final response =
-        await http.get(Uri.parse("$baseURL${endpoint['search']}$q"));
+        await httpClient.get(Uri.parse("$baseURL${endpoint['search']}$q"));
     if (response.statusCode == 200) {
       return SearchRestaurantsResult.fromJson(json.decode(response.body));
     } else {
@@ -45,8 +49,9 @@ class ApiService {
     }
   }
 
-  Future<ReviewRestaurantResult> addReview(AddReviewRestaurant review) async {
-    final response = await http.post(
+  Future<ReviewRestaurantResult> addReview(AddReviewRestaurant review,
+      ) async {
+    final response = await httpClient.post(
       Uri.parse("$baseURL${endpoint['addReview']}"),
       headers: <String, String>{
         'Content-Type': 'application/json',
